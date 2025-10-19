@@ -1,0 +1,40 @@
+import { proxy } from 'valtio';
+
+const state = proxy({
+  intro: true,
+  color: '#3B82F6', // Blue color for water bottle
+  isFrontLogoTexture: true,
+  isBackLogoTexture: false,
+  isFrontText: true,
+  isBackText: false,
+  isFullTexture: false,
+  frontLogoDecal: '/threejs.png',
+  fullDecal: '/texture.jpeg',
+  frontLogoPosition: [ 0, .7, 0.25],
+  frontLogoScale: [0.4, 1, 0.4],
+  backLogoDecal: '/threejs.png',
+  backLogoPosition: [0, 0.7, -0.3],
+  backLogoRotation: [0, Math.PI, 0],
+  backLogoScale: [0.4, 1, 0.4],
+  frontText: 'Aqua2Promo',
+  frontTextPosition: [0, -0.1, 0.3],
+  frontTextRotation: [0, 0, 0],
+  frontTextFontSize: 0.1,
+  frontTextScale: [0.15, 0.05, 0.3],
+  frontTextFont: 'Arial',
+  frontTextSize: 48,
+  frontTextColor: 'white',
+  backText: 'Custom Bottle',
+  backTextPosition: [0, 0.7, -0.25],
+  backTextRotation: [0, Math.PI, 0],
+  backTextScale: [0.5, 1, 0.5],
+  backTextFontSize: 0.1,
+  backTextScale: [0.15, 0.05, 0.3],
+  backTextFont: 'Arial',
+  backTextSize: 48,
+  backTextColor: 'white',
+  isRightTopLight: false,
+  isMobilePanelOpen: false,
+});
+
+export default state;
