@@ -1,0 +1,45 @@
+🚀 HOSTINGER FRONTEND DEPLOYMENT INSTRUCTIONS
+
+📋 QUICK DEPLOYMENT STEPS:
+
+1. BUILD THE PROJECT:
+   npm run build
+
+2. RUN HOSTINGER DEPLOYMENT:
+   npm run deploy:hostinger
+
+3. UPLOAD TO HOSTINGER:
+   - Login to Hostinger control panel
+   - Go to File Manager
+   - Navigate to public_html folder
+   - Upload ALL contents from hostinger-deploy/public_html/ folder
+   - Make sure .htaccess file is uploaded
+
+4. TEST YOUR WEBSITE:
+   - Visit your domain
+   - Check all pages work correctly
+   - Test form submissions
+
+📁 FILES TO UPLOAD:
+- All files from hostinger-deploy/public_html/ folder
+- Make sure .htaccess is included for React Router support
+
+🔧 CONFIGURATION:
+- Update API endpoints in your frontend code to point to your Render backend
+- Example: const API_BASE_URL = 'https://your-backend-app.onrender.com';
+
+✅ SUCCESS INDICATORS:
+- Website loads without errors
+- All pages are accessible
+- Forms work correctly
+- 3D models load properly
+
+❌ COMMON ISSUES:
+- 404 errors: Check .htaccess file is uploaded
+- API errors: Update backend URL in frontend
+- CORS errors: Check backend CORS configuration
+
+📞 NEED HELP?
+- Check browser console for errors
+- Verify all files are uploaded correctly
+- Test API endpoints separately

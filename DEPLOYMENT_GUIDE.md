@@ -1,187 +1,272 @@
-# 🚀 Aqua2Promo Deployment Guide
+# Aqua2Promo Deployment Guide
 
-## 📁 Project Structure
+This guide will help you deploy the Aqua2Promo application with the frontend on Hostinger and the backend on Render.
+
+## 🎯 Overview
+
+- **Frontend**: React + Vite application deployed on Hostinger
+- **Backend**: Node.js + Express API deployed on Render
+- **Database**: Firebase Firestore
+- **Email**: Nodemailer with Gmail SMTP
+
+## 📋 Prerequisites
+
+1. **Hostinger Account**: For frontend hosting
+2. **Render Account**: For backend API hosting
+3. **Firebase Project**: For database and authentication
+4. **Gmail Account**: For email services
+5. **Domain Name**: (Optional but recommended)
+
+## 🚀 Part 1: Frontend Deployment on Hostinger
+
+### Step 1: Prepare Frontend for Hostinger
+
+1. **Build the project locally:**
+   ```bash
+   npm run build
+   ```
+
+2. **Run the Hostinger deployment script:**
+   ```bash
+   npm run deploy:hostinger
+   ```
+
+3. **This will create a `hostinger-deploy/public_html/` folder with all necessary files.**
+
+### Step 2: Upload to Hostinger
+
+1. **Login to your Hostinger control panel**
+2. **Go to File Manager**
+3. **Navigate to `public_html` folder**
+4. **Upload all contents from `hostinger-deploy/public_html/` to your `public_html` folder**
+5. **Make sure the `.htaccess` file is uploaded (for React Router support)**
+
+### Step 3: Configure Domain (if using custom domain)
+
+1. **Point your domain to Hostinger's nameservers**
+2. **Update DNS settings if needed**
+3. **Test your website at your domain**
+
+### Step 4: Update API Endpoints
+
+Update your frontend API calls to point to your Render backend URL:
+
+```javascript
+// In your frontend code, update API base URL
+const API_BASE_URL = 'https://your-backend-app.onrender.com';
 ```
-bottle-canvas-pro/
-├── src/                    # Frontend (React + Vite)
-├── backend/               # Backend (Node.js + Express)
-├── public/                # Static assets
-├── vercel.json           # Vercel configuration
-└── package.json          # Frontend dependencies
-```
 
-## 🎯 Deployment Strategy
+## 🔧 Part 2: Backend Deployment on Render
 
-### Frontend: Vercel (Recommended)
-- **URL**: `https://aqua2promo.vercel.app`
-- **Build Command**: `npm run build`
-- **Output Directory**: `dist`
+### Step 1: Prepare Backend for Render
 
-### Backend: Vercel API Routes
-- **URL**: `https://aqua2promo.vercel.app/api/*`
-- **Runtime**: Node.js 18+
+1. **Navigate to the backend directory:**
+   ```bash
+   cd backend
+   ```
 
-## 🔧 Step-by-Step Deployment
+2. **Install dependencies:**
+   ```bash
+   npm install
+   ```
 
-### 1. Push Code to GitHub
-```bash
-git add .
-git commit -m "Add Vercel configuration"
-git push origin main
-```
+3. **Test locally:**
+   ```bash
+   npm start
+   ```
 
-### 2. Deploy to Vercel
+### Step 2: Deploy to Render
 
-#### Option A: Vercel CLI (Recommended)
-```bash
-# Install Vercel CLI
-npm i -g vercel
+1. **Login to Render Dashboard**
+2. **Click "New +" → "Web Service"**
+3. **Connect your GitHub repository**
+4. **Select the backend folder as root directory**
+5. **Configure the service:**
 
-# Login to Vercel
-vercel login
+   **Basic Settings:**
+   - **Name**: `aqua2promo-backend`
+   - **Environment**: `Node`
+   - **Region**: Choose closest to your users
+   - **Branch**: `main` (or your default branch)
+   - **Root Directory**: `backend`
 
-# Deploy from project root
-vercel
+   **Build & Deploy:**
+   - **Build Command**: `npm install`
+   - **Start Command**: `npm start`
 
-# Follow the prompts:
-# - Link to existing project? No
-# - Project name: aqua2promo
-# - Directory: ./
-# - Override settings? No
-```
+### Step 3: Configure Environment Variables
 
-#### Option B: Vercel Dashboard
-1. Go to [vercel.com](https://vercel.com)
-2. Click "New Project"
-3. Import from GitHub: `PRATIKSINDHIYA/Aqua2Promo`
-4. Configure settings:
-   - **Framework Preset**: Vite
-   - **Build Command**: `npm run build`
-   - **Output Directory**: `dist`
-   - **Install Command**: `npm install`
-
-### 3. Environment Variables Setup
-
-In Vercel Dashboard → Project Settings → Environment Variables:
+In Render dashboard, go to your service → Environment tab and add:
 
 ```env
+NODE_ENV=production
+PORT=10000
+
 # Firebase Configuration
-FIREBASE_PROJECT_ID=aqua2promo-998b7
-FIREBASE_PRIVATE_KEY_ID=20912a1a656ed967b309ad3131bca5f87095ee8b
-FIREBASE_PRIVATE_KEY=-----BEGIN PRIVATE KEY-----\nMIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQDqoqe9GjkkTo6c...
-FIREBASE_CLIENT_EMAIL=firebase-adminsdk-fbsvc@aqua2promo-998b7.iam.gserviceaccount.com
-FIREBASE_CLIENT_ID=100080266919396348385
+FIREBASE_PROJECT_ID=your-firebase-project-id
+FIREBASE_PRIVATE_KEY_ID=your-private-key-id
+FIREBASE_PRIVATE_KEY="-----BEGIN PRIVATE KEY-----\nYour private key here\n-----END PRIVATE KEY-----\n"
+FIREBASE_CLIENT_EMAIL=your-client-email@your-project.iam.gserviceaccount.com
+FIREBASE_CLIENT_ID=your-client-id
 
 # Email Configuration
 EMAIL_HOST=smtp.gmail.com
 EMAIL_PORT=587
-EMAIL_USER=pratiksindhiya3@gmail.com
-EMAIL_PASS=your-gmail-app-password
-ADMIN_EMAIL=pratiksindhiya3@gmail.com
+EMAIL_USER=your-email@gmail.com
+EMAIL_PASS=your-app-password
+EMAIL_FROM=your-email@gmail.com
+EMAIL_TO=admin@yourdomain.com
 
-# Server Configuration
-NODE_ENV=production
+# Contract Configuration
+CONTRACT_PIN=1234
 ```
 
-### 4. Update Frontend API URLs
+### Step 4: Deploy and Test
 
-Update your frontend to use the deployed backend:
+1. **Click "Create Web Service"**
+2. **Wait for deployment to complete**
+3. **Test the health endpoint**: `https://your-app.onrender.com/health`
+4. **Update your frontend API URLs to use the Render URL**
 
-```typescript
-// In your frontend code, update API base URL
-const API_BASE_URL = process.env.NODE_ENV === 'production' 
-  ? 'https://aqua2promo.vercel.app/api'
-  : 'http://localhost:5000';
+## 🔐 Part 3: Firebase Configuration
+
+### Step 1: Firebase Project Setup
+
+1. **Go to Firebase Console**
+2. **Create a new project or use existing**
+3. **Enable Firestore Database**
+4. **Enable Authentication with Email/Password**
+
+### Step 2: Service Account Setup
+
+1. **Go to Project Settings → Service Accounts**
+2. **Generate new private key**
+3. **Download the JSON file**
+4. **Extract the values for environment variables**
+
+### Step 3: Firestore Security Rules
+
+```javascript
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    match /{document=**} {
+      allow read, write: if request.auth != null;
+    }
+  }
+}
 ```
 
-## 🔄 Alternative Backend Deployment Options
+## 📧 Part 4: Email Configuration
 
-### Option 1: Railway (Recommended for complex backends)
-1. Go to [railway.app](https://railway.app)
-2. Connect GitHub repository
-3. Deploy from `backend/` directory
-4. Set environment variables
-5. Get backend URL: `https://aqua2promo-backend.railway.app`
+### Step 1: Gmail App Password
 
-### Option 2: Render
-1. Go to [render.com](https://render.com)
-2. Create new Web Service
-3. Connect GitHub repository
-4. Set build command: `cd backend && npm install`
-5. Set start command: `cd backend && npm start`
+1. **Enable 2-Factor Authentication on Gmail**
+2. **Generate App Password for "Mail"**
+3. **Use this password in EMAIL_PASS environment variable**
 
-## 🌐 Domain Setup (Optional)
+### Step 2: Test Email Functionality
 
-### Custom Domain
-1. In Vercel Dashboard → Domains
-2. Add your domain: `aqua2promo.com`
-3. Update DNS records as instructed
-4. SSL certificate will be auto-generated
+1. **Deploy your backend**
+2. **Test the `/test-email` endpoint**
+3. **Verify emails are being sent correctly**
 
-## 📊 Monitoring & Analytics
+## 🔗 Part 5: Connecting Frontend and Backend
 
-### Vercel Analytics
-- Built-in performance monitoring
-- Real-time analytics
-- Error tracking
+### Step 1: Update Frontend API Configuration
 
-### Firebase Analytics
-- User behavior tracking
-- Custom events
-- Conversion tracking
+In your frontend code, update the API base URL:
 
-## 🔒 Security Checklist
+```javascript
+// src/config/constants.ts or similar
+export const API_BASE_URL = 'https://your-backend-app.onrender.com';
+```
 
-- [ ] Environment variables secured
-- [ ] CORS properly configured
-- [ ] Firebase security rules updated
-- [ ] Email credentials secured
-- [ ] API rate limiting implemented
+### Step 2: CORS Configuration
+
+The backend is already configured to allow all origins. For production, you might want to restrict this:
+
+```javascript
+// In backend/server.js
+app.use(cors({
+  origin: ['https://yourdomain.com', 'https://www.yourdomain.com'],
+  credentials: true,
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization']
+}));
+```
+
+## 🧪 Part 6: Testing Your Deployment
+
+### Frontend Tests
+
+1. **Visit your Hostinger domain**
+2. **Test all pages and navigation**
+3. **Test form submissions**
+4. **Test 3D model loading**
+
+### Backend Tests
+
+1. **Health check**: `GET https://your-app.onrender.com/health`
+2. **Email OTP**: `POST https://your-app.onrender.com/send-email-otp`
+3. **Contract submission**: `POST https://your-app.onrender.com/submit-contract`
+4. **Contact form**: `POST https://your-app.onrender.com/api/contact`
 
 ## 🚨 Troubleshooting
 
-### Common Issues:
+### Common Issues
 
-1. **Build Fails**
-   - Check Node.js version (18+)
-   - Verify all dependencies installed
-   - Check for TypeScript errors
+1. **CORS Errors**: Check your backend CORS configuration
+2. **Email Not Sending**: Verify Gmail app password and SMTP settings
+3. **Firebase Errors**: Check service account credentials
+4. **Build Failures**: Check Node.js version compatibility
 
-2. **API Routes Not Working**
-   - Verify `vercel.json` configuration
-   - Check backend deployment
-   - Test API endpoints manually
+### Debug Commands
 
-3. **Environment Variables**
-   - Ensure all required variables set
-   - Check variable names match code
-   - Redeploy after adding variables
-
-### Debug Commands:
 ```bash
-# Test backend locally
-cd backend
-npm install
-npm start
-
-# Test frontend locally
-npm run dev
-
-# Check Vercel deployment
-vercel logs
+# Check backend logs in Render dashboard
+# Check frontend console for errors
+# Test API endpoints with Postman or curl
 ```
+
+## 📊 Monitoring
+
+### Render Monitoring
+
+1. **Check Render dashboard for service health**
+2. **Monitor logs for errors**
+3. **Set up alerts for downtime**
+
+### Hostinger Monitoring
+
+1. **Check website uptime**
+2. **Monitor file uploads and permissions**
+3. **Check SSL certificate status**
+
+## 🔄 Updates and Maintenance
+
+### Frontend Updates
+
+1. **Make changes to your code**
+2. **Run `npm run build`**
+3. **Run `npm run deploy:hostinger`**
+4. **Upload new files to Hostinger**
+
+### Backend Updates
+
+1. **Push changes to GitHub**
+2. **Render will automatically redeploy**
+3. **Check deployment logs for issues**
 
 ## 📞 Support
 
-For deployment issues:
-- Vercel Documentation: [vercel.com/docs](https://vercel.com/docs)
-- Firebase Documentation: [firebase.google.com/docs](https://firebase.google.com/docs)
-- GitHub Repository: [github.com/PRATIKSINDHIYA/Aqua2Promo](https://github.com/PRATIKSINDHIYA/Aqua2Promo)
+If you encounter issues:
+
+1. **Check Render logs for backend issues**
+2. **Check browser console for frontend issues**
+3. **Verify all environment variables are set correctly**
+4. **Test API endpoints individually**
 
 ---
 
-**🎉 Congratulations! Your Aqua2Promo app is now deployed!**
-
-- **Frontend**: `https://aqua2promo.vercel.app`
-- **Backend API**: `https://aqua2promo.vercel.app/api/*`
-- **Admin Panel**: `https://aqua2promo.vercel.app/admin`
+**🎉 Congratulations! Your Aqua2Promo application should now be live on Hostinger (frontend) and Render (backend)!**

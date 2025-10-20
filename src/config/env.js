@@ -9,5 +9,5 @@ export const config = {
     appId: import.meta.env.VITE_FIREBASE_APP_ID || "1:36925593507:web:dd9452351b5dd070ae6c16",
     measurementId: "G-74V4THXV11"
   },
-  apiUrl: import.meta.env.VITE_API_URL || "http://localhost:5000"
+  apiUrl: import.meta.env.VITE_API_URL || (import.meta.env.PROD ? "https://aiwillendjobs.com" : "http://localhost:5000")
 };

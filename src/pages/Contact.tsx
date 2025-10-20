@@ -31,10 +31,11 @@ const Contact = () => {
     setSubmitStatus('');
 
     try {
-      console.log('Sending request to:', 'http://localhost:5000/api/contact');
+      const apiUrl = import.meta.env.PROD ? 'https://aiwillendjobs.com/api' : 'http://localhost:5000';
+      console.log('Sending request to:', `${apiUrl}/contact`);
       console.log('Form data:', formData);
       
-      const response = await fetch('http://localhost:5000/api/contact', {
+      const response = await fetch(`${apiUrl}/contact`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

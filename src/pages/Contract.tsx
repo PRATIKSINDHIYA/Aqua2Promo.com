@@ -564,7 +564,8 @@ const Contract = () => {
     });
 
     try {
-      const response = await fetch('http://localhost:5000/submit-contract', {
+      const apiUrl = import.meta.env.PROD ? 'https://aiwillendjobs.com/api' : 'http://localhost:5000';
+      const response = await fetch(`${apiUrl}/submit-contract`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
